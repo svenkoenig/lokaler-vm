@@ -16,4 +16,11 @@ alias shell='manage shell'
 
 alias shutdown='sudo shutdown -h now'
 
+update-vm () {
+	_path=`pwd`;
+	cd $PATH_LOKALER_VM;
+	git pull;
+	cd $_path;
+}
+
 activate
