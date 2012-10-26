@@ -10,7 +10,10 @@ alias manage='python ~/repos/lokaler/manage.py'
 alias activate='. ~/env/bin/activate'
 alias update-env='pip install -r ~/repos/lokaler/requirements.txt'
 alias update-repos=". $PATH_LOKALER_VM/update-repos.sh"
+
 alias runserver='manage runserver 0.0.0.0:8000'
+alias shell='manage shell'
+
 alias shutdown='sudo shutdown -h now'
 
 activate
