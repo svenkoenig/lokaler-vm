@@ -1,0 +1,11 @@
+PS1="\[\e]0;\w\a\]\n\[\e[45m\]\u@\h\[\e[0m\] \[\e[33m\]\w\[\e[0m\]\n\$ "
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+alias ll='ls -la'
+alias manage='python ~/repos/lokaler/manage.py'
+alias activate='. ~/env/bin/activate'
+alias update-env='pip install -r ~/repos/lokaler/requirements.txt'
+alias update-repos='. ~/nuts-and-bolts/update-repos.sh'
+alias runserver='manage runserver 0.0.0.0:8000'
+alias shutdown='sudo shutdown -h now'
+activate
