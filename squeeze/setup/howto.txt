@@ -1,0 +1,13 @@
+# login as root
+
+mkdir /tmp/setup && cd /tmp/setup
+git clone git://github.com/svenkoenig/lokaler-vm.git
+cd lokaler-vm/squeeze/setup/
+. install-as-root.sh # this may take a while...
+
+# login as lokaler
+su - lokaler
+cd ~
+git clone git://github.com/svenkoenig/lokaler-vm.git
+cd lokaler-vm/squeeze/setup/
+. install-as-root.sh # this may take a while...
