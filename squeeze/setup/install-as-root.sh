@@ -7,7 +7,8 @@ mv $pg_hba_conf $pg_hba_conf~
 echo "local   all         postgres                          trust" >> $pg_hba_conf
 echo "local   all         all                               trust" >> $pg_hba_conf
 echo "host    all         all         127.0.0.1/32          trust" >> $pg_hba_conf
-echo "host    all         all         ::1/128               md5" >> $pg_hba_conf
+echo "host    all         all         0.0.0.0/0             md5" >> $pg_hba_conf
+echo "listen_addresses = '*'" >> /etc/postgresql/8.4/main/postgresql.conf
 /etc/init.d/postgresql restart
 echo "CREATE ROLE lokaler WITH SUPERUSER LOGIN;" | psql -U postgres
 
@@ -48,5 +49,3 @@ apt-get install libxml2-dev libxslt1-dev
 # python
 easy_install virtualenv
 
-# add user
-adduser lokaler

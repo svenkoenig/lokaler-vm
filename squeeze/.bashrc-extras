@@ -1,20 +1,33 @@
+export PATH_LOKALER_VM="$HOME/lokaler-vm/squeeze"
+
+. $PATH_LOKALER_VM/settings.sh
+
+if [ -d $PATH_REPOS_LOCAL/lokaler ]
+then
+	export PATH_LOKALER_LOKALER=$PATH_REPOS_LOCAL/lokaler
+else
+	export PATH_LOKALER_LOKALER=$PATH_REPOS_REMOTE/lokaler
+fi
+
 PS1="\[\e]0;\w\a\]\n\[\e[45m\]\u@\h\[\e[0m\] \[\e[33m\]\w\[\e[0m\]\n\$ "
 
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 alias ll='ls -la'
 
-PATH_LOKALER_VM="$HOME/lokaler-vm/squeeze"
+export MANAGE="python $PATH_LOKALER_LOKALER/manage.py"
 
-alias manage='python ~/repos/lokaler/manage.py'
+alias manage=$MANAGE
 alias activate='. ~/env/bin/activate'
-alias update-env='pip install -r ~/repos/lokaler/requirements.txt'
-alias update-repos=". $PATH_LOKALER_VM/update-repos.sh"
+alias update-env='pip install -r $PATH_LOKALER_LOKALER/requirements.txt'
+alias update-repositories="$PATH_LOKALER_VM/update-repositories.sh"
 
 alias runserver='manage runserver 0.0.0.0:8000'
 alias shell='manage shell'
 
 alias shutdown='sudo shutdown -h now'
+
+alias db-reset='$PATH_LOKALER_VM/database/db-reset.sh'
 
 update-vm () {
 	_path=`pwd`;
@@ -23,4 +36,20 @@ update-vm () {
 	cd $_path;
 }
 
+use-conf () {
+	if [ -z "$1" ]
+	then
+		echo "missing argument."
+	else
+		lokaler_config_file=$PATH_LOKALER_LOKALER/instances/config/$1.conf
+		if [ -e $lokaler_config_file ]
+		then
+			export LOKALER_CONFIG_FILE=$lokaler_config_file
+		else
+			echo \"$lokaler_config_file\" doesn\'t exist.
+		fi
+	fi
+}
+
+use-conf berlin
 activate

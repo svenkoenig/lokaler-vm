@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 . ./db_settings.sh
 
@@ -22,20 +22,18 @@ if [ -f "$dump_file.tar.gz" ]; then
   gzip -dc "$dump_file.tar.gz" > "$dump_file.tar"
 fi
 
-if [ -f "$dump_file.tar" ]; then
-    args_user_pass="-U $database_user"
-    if [ $database_authenticate -eq 1 ]; then args_user_pass="args_user_pass -W"; fi
-    
-    activity=`echo 'select * from pg_stat_activity;' | psql -U postgres | grep -v 'pg_stat_activity;' | grep '^ *[0-9]'`
+if [ -f "$dump_file.tar" ]
+then
 	activity=''
     if [ -n "$activity" ]; then
         echo "there are clients connected to the database. please disconnect them first."
     else
         echo "dropping and recreating database..."
-        echo "DROP DATABASE IF EXISTS \"$database_name\"; CREATE DATABASE \"$database_name\"" | psql $args_user_pass
+		dropdb $database_name
+		createdb $database_name -T template_postgis
         echo "restoring dump..."
-        echo '*' pg_restore $args_user_pass -d $database_name $dump_file.tar
-        pg_restore $args_user_pass -d $database_name $dump_file.tar
+        echo '*' pg_restore -d $database_name $dump_file.tar
+        pg_restore -d $database_name $dump_file.tar
         date > db_restore-info.txt
         echo "cleaning up..."
         rm "$dump_file.tar"
@@ -44,3 +42,4 @@ if [ -f "$dump_file.tar" ]; then
 else
     echo "\"$dump_file.tar\" not found."
 fi
+
