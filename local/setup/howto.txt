@@ -2,7 +2,7 @@
 
 mkdir /tmp/setup && cd /tmp/setup
 git clone git://github.com/svenkoenig/lokaler-vm.git
-cd lokaler-vm/squeeze/setup/
+cd lokaler-vm/local/setup/
 . install-as-root.sh # this may take a while...
 
 # add user
@@ -12,5 +12,5 @@ adduser lokaler
 su - lokaler
 cd ~
 git clone git://github.com/svenkoenig/lokaler-vm.git
-cd lokaler-vm/squeeze/setup/
+cd lokaler-vm/local/setup/
 . install-as-user.sh # this may take a while...

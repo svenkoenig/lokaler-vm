@@ -1,4 +1,4 @@
-export PATH_LOKALER_VM="$HOME/lokaler-vm/squeeze"
+export PATH_LOKALER_VM="$HOME/lokaler-vm/local"
 
 . $PATH_LOKALER_VM/settings.sh
 
@@ -53,3 +53,6 @@ use-conf () {
 
 use-conf berlin
 activate
+
+alias cdrepositories='cd ~/repositories'
+alias cdvm='cd $PATH_LOKALER_VM'

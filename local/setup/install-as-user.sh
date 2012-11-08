@@ -1,15 +1,14 @@
 cd ~
-. ~/settings.sh
 
 ln -s /mnt/hgfs/lokaler/lokaler-vm/
 # git clone git://github.com/svenkoenig/lokaler-vm.git
 
 ln -s /mnt/hgfs/tmp/ tmp 2> /dev/null
 
-echo ". ~/lokaler-vm/squeeze/.bashrc-extras" >> .bashrc
-
-ln -s /mnt/hgfs/lokaler/ $PATH_REPOS_LOCAL # your lokaler shared folder - to be configured in vmware
-mkdir $PATH_REPOS_REMOTE
+if [ ! "`grep .bashrc-extras ~/.bashrc`" ]
+then
+	echo ". ~/lokaler-vm/local/.bashrc-extras" >> .bashrc
+fi
 
 virtualenv -p /usr/local/bin/python2.7 --distribute env
 activate
