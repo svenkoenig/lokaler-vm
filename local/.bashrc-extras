@@ -1,7 +1,10 @@
-export PATH_LOKALER_VM="$HOME/lokaler-vm/local"
+export PATH_SHARED_FOLDER=/mnt/hgfs/lokaler
+export PATH_LOKALER_VM=$HOME/lokaler-vm/local
+export PIP_DOWNLOAD_CACHE=$HOME/.pip_download_cache
 
 . $PATH_LOKALER_VM/settings.sh
 
+# ---------- REPOSITORIES ----------
 if [ -d $PATH_REPOS_LOCAL/lokaler ]
 then
 	export PATH_LOKALER_LOKALER=$PATH_REPOS_LOCAL/lokaler
@@ -9,15 +12,18 @@ else
 	export PATH_LOKALER_LOKALER=$PATH_REPOS_REMOTE/lokaler
 fi
 
+# ---------- SHELL NICETIES ----------
 PS1="\[\e]0;\w\a\]\n\[\e[45m\]\u@\h\[\e[0m\] \[\e[33m\]\w\[\e[0m\]\n\$ "
-
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
+
 alias ll='ls -la'
 
 export MANAGE="python $PATH_LOKALER_LOKALER/manage.py"
 
 alias manage=$MANAGE
+# wrap-alias $MANAGE
+
 alias activate='. ~/env/bin/activate'
 alias update-env='pip install -r $PATH_LOKALER_LOKALER/requirements.txt'
 alias update-repositories="$PATH_LOKALER_VM/update-repositories.sh"
@@ -54,5 +60,41 @@ use-conf () {
 use-conf berlin
 activate
 
-alias cdrepositories='cd ~/repositories'
-alias cdvm='cd $PATH_LOKALER_VM'
+
+# ---------- GENERAL COMFORT ----------
+mkdircd () { mkdir -p $1 && cd $1; }
+alias cdtmp='cd ~/tmp'
+
+# ---------- DATABASE ----------
+alias db-ls='psql -l'
+alias db-rm='dropdb'
+alias db-cp='createdb -T'
+db-mv () { echo "ALTER DATABASE \"$1\" RENAME TO \"$2\";" | psql; }
+
+alias db-ls-dumps='ls -l ~/dumps'
+alias db-get-remote-dump='bash $PATH_LOKALER_VM/database/get_remote_dump.sh'
+alias db-restore-latest-dump='bash $PATH_LOKALER_VM/database/restore-latest-dump.sh'
+
+# ---------- BASH COMPLETION ----------
+. ~/.scripts/make-completion-wrapper.sh
+
+# ---------- CD ----------
+alias cd-tmp="cd ~/tmp"
+alias cd-vm="cd $PATH_LOKALER_VM"
+
+alias cd-repositories="cd $PATH_REPOS_ALL"
+alias cd-lokaler="cd $PATH_REPOS_ALL/lokaler"
+alias cd-lokaler-admin="cd $PATH_REPOS_ALL/lokaler-admin/lokaler_admin"
+alias cd-lokaler-analytics="cd $PATH_REPOS_ALL/lokaler-analytics/analytics"
+alias cd-lokaler-api="cd $PATH_REPOS_ALL/lokaler-api/lokaler_api"
+alias cd-lokaler-core="cd $PATH_REPOS_ALL/lokaler-core/localdata"
+alias cd-lokaler-frontend="cd $PATH_REPOS_ALL/lokaler-frontend/lokaler_frontend"
+alias cd-lokaler-places="cd $PATH_REPOS_ALL/lokaler-places/places"
+alias cd-lokaler-users="cd $PATH_REPOS_ALL/lokaler-users/users"
+
+# ---------- GIT ----------
+alias gs="git status"
+alias gd="git diff"
+alias gc="git commit"
+alias ga="git add"
+alias gl="git log"

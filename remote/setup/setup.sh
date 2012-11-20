@@ -1,0 +1,1 @@
+git clone git://github.com/svenkoenig/lokaler-vm.git ~/lokaler-vm

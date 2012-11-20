@@ -1,8 +1,3 @@
-from django.contrib.auth.models import User
-u = User.objects.get(username='admin')
-u.set_password('ok')
-u.save()
-
 import commands
 ip = commands.getoutput("/sbin/ifconfig").split("\n")[1].split()[1][5:]
 

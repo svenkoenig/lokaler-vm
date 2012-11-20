@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-. ./db_settings.sh
+. $PATH_LOKALER_VM/database/db_settings.sh
 
 LOGIN="sven@89.238.64.39"
 SCRIPT="/home/sven/db/db_dump.sh"

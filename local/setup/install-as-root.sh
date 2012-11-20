@@ -26,7 +26,7 @@ make
 make altinstall
 
 # node.js
-mkdir /tmp/node && cd /tmp/node
+mkdir -p /tmp/node && cd /tmp/node
 wget http://nodejs.org/dist/v0.8.12/node-v0.8.12.tar.gz
 tar xfvz node-v0.8.12.tar.gz && cd node-v0.8.12
 ./configure
@@ -34,7 +34,7 @@ make -j4
 make install
 
 # lessc
-mkdir /tmp/lessc && /tmp/lessc
+mkdir -p /tmp/lessc && /tmp/lessc
 wget --no-check-certificate https://github.com/cloudhead/less.js/tarball/master
 tar xfvz master
 mv `ls -d cloudhead-less.js-*` lesscss
@@ -49,3 +49,12 @@ apt-get install libxml2-dev libxslt1-dev
 # python
 easy_install virtualenv
 
+# clone lokaler-vm
+cd /tmp
+PATH_SHARED_FOLDER="/mnt/hgfs/lokaler"
+ln -s $PATH_SHARED_FOLDER/lokaler-vm/ 
+# git clone git://github.com/svenkoenig/lokaler-vm.git lokaler-vm
+cd /tmp/lokaler-vm/local/setup/files/
+
+# completion wrapper
+cp wrap-alias.sh /usr/local/bin/wrap-alias

@@ -51,7 +51,7 @@ update_repository ()
 mkdir -p $PATH_REPOS_ALL
 mkdir -p $PATH_REPOS_REMOTE
 # link to local repositories (your shared folder to be configured in vmware)
-softlink /mnt/hgfs/lokaler/ $PATH_REPOS_LOCAL
+softlink $PATH_SHARED_FOLDER $PATH_REPOS_LOCAL
 
 update_repository lokaler git@github.com:lokaler/lokaler.git
 repositories_txt="$PATH_REPOS_ALL/lokaler/repositories.txt"
