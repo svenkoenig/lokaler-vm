@@ -26,14 +26,11 @@ alias manage=$MANAGE
 
 alias activate='. ~/env/bin/activate'
 alias update-env='pip install -r $PATH_LOKALER_LOKALER/requirements.txt'
-alias update-repositories="$PATH_LOKALER_VM/update-repositories.sh"
 
 alias runserver='manage runserver 0.0.0.0:8000'
 alias shell='manage shell'
 
 alias shutdown='sudo shutdown -h now'
-
-alias db-reset='$PATH_LOKALER_VM/database/db-reset.sh'
 
 update-vm () {
 	_path=`pwd`;
@@ -60,10 +57,14 @@ use-conf () {
 use-conf berlin
 activate
 
-
 # ---------- GENERAL COMFORT ----------
 mkdircd () { mkdir -p $1 && cd $1; }
 alias cdtmp='cd ~/tmp'
+
+# ---------- REPOSITORIES ----------
+alias repos-update="$PATH_LOKALER_VM/repos/update.sh"
+alias repos-pull="$PATH_LOKALER_VM/repos/git-all.sh pull"
+alias repos-status="$PATH_LOKALER_VM/repos/git-all status"
 
 # ---------- DATABASE ----------
 alias db-ls='psql -l'
@@ -74,6 +75,13 @@ db-mv () { echo "ALTER DATABASE \"$1\" RENAME TO \"$2\";" | psql; }
 alias db-ls-dumps='ls -l ~/dumps'
 alias db-get-remote-dump='bash $PATH_LOKALER_VM/database/get_remote_dump.sh'
 alias db-restore-latest-dump='bash $PATH_LOKALER_VM/database/restore-latest-dump.sh'
+alias db-reset='$PATH_LOKALER_VM/database/db-reset.sh'
+db-use () {
+	echo "DATABASE_DEFAULT_NAME = '$1'" > $PATH_LOKALER_LOKALER/lokalerde/settings/local_database.py
+}
+
+# ---------- MEDIA ----------
+alias media-mirror='$PATH_LOKALER_VM/media-mirror.sh'
 
 # ---------- BASH COMPLETION ----------
 . ~/.scripts/make-completion-wrapper.sh
@@ -98,3 +106,6 @@ alias gd="git diff"
 alias gc="git commit"
 alias ga="git add"
 alias gl="git log"
+
+# ---------- SSH ----------
+alias ssh_lokaler='ssh sven@89.238.64.39'
