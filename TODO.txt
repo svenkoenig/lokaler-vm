@@ -1,0 +1,6 @@
+virtual machine cleanup
+* remove keys
+* add new keys
+* add user keys to remote
+* remove old databases
+* remove media mirrors

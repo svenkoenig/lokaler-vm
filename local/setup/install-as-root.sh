@@ -46,6 +46,9 @@ ln -s ../lesscss/bin/lessc
 apt-get install libxml2-dev libxslt1-dev
 # apt-get install python2.6-dev # ???
 
+# qt4 
+# sudo apt-get install python-qt4
+
 # python
 easy_install virtualenv
 
