@@ -6,7 +6,6 @@
 if [[ -z "$1" ]]; then echo "name of database needed!"; exit 1; fi 
 
 DATABASE_NAME=$1
-LOGIN="sven@89.238.64.39"
 SCRIPT="/home/sven/lokaler-vm/remote/db_dump.sh"
 LOG=remote_command.log
 
