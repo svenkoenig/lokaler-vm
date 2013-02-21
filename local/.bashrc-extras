@@ -5,16 +5,18 @@ export PIP_DOWNLOAD_CACHE=$HOME/.pip_download_cache
 . $PATH_LOKALER_VM/settings.sh
 
 # ---------- REPOSITORIES ----------
-#??? if [ -d $PATH_REPOS_LOCAL/lokaler ]
-#??? then
-#??? 	export PATH_LOKALER_LOKALER=$PATH_REPOS_LOCAL/lokaler
-#??? else
-#??? 	export PATH_LOKALER_LOKALER=$PATH_REPOS_REMOTE/lokaler
-#??? fi
 export PATH_LOKALER_LOKALER=$PATH_REPOS_ALL/lokaler
 
 # ---------- SHELL NICETIES ----------
-PS1="\[\e]0;\w\a\]\n\[\e[45m\]\u@\h\[\e[0m\] \[\e[33m\]\w\[\e[0m\]\n\$ "
+# PS1="\[\e]0;\w\a\]\n\[\e[45m\]\u@\h\[\e[0m\] \[\e[33m\]\w\[\e[0m\] @$(__git_ps1 " (%s)") \n\$ "
+function prompt_command {
+	user_machine="\[\e[45m\]\u@\h\[\e[0m\]"
+	path="\[\e[33m\]\w\[\e[0m\]"
+	branch=$(__git_ps1 " @(%s)")
+	export PS1="${user_machine} ${path}${branch}\n\$ "
+}
+export PROMPT_COMMAND=prompt_command
+
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 
@@ -55,9 +57,6 @@ use-conf () {
 	fi
 }
 
-use-conf berlin
-activate
-
 # ---------- GENERAL COMFORT ----------
 mkdircd () { mkdir -p $1 && cd $1; }
 alias cdtmp='cd ~/tmp'
@@ -77,6 +76,7 @@ alias db-ls-dumps='ls -l ~/dumps'
 alias db-get-remote-dump='bash $PATH_LOKALER_VM/database/get_remote_dump.sh'
 alias db-restore-latest-dump='bash $PATH_LOKALER_VM/database/restore-latest-dump.sh'
 alias db-reset='$PATH_LOKALER_VM/database/db-reset.sh'
+
 db-use () {
 	echo "DATABASE_DEFAULT_NAME = '$1'" > $PATH_LOKALER_LOKALER/lokalerde/settings/local_database.py
 }
@@ -105,12 +105,20 @@ instance-set () {
 		return
 	fi
 
+	database_name=lokaler_${instance_name}
+	# TODO - check if database exists
+	
 	export LOKALER_CONFIG_FILE=$lokaler_config_file
+	export LOKALER_ACTIVE_INSTANCE=$instance_name
 
 	settings_file="$PATH_LOKALER_LOKALER/lokalerde/settings/local_vm.py"
 	echo "" > $settings_file
-	echo "DATABASE_DEFAULT_NAME = 'lokaler'" >> $settings_file;
+	echo "DATABASE_DEFAULT_NAME = '${database_name}'" >> $settings_file;
 	echo "MEDIA_ROOT = '/home/lokaler/production/${instance_name}/media'" >> $settings_file
+	echo "MEDIA_ROOT = '/home/lokaler/production/${instance_name}/media'" >> $settings_file
+	echo $instance_name > $SETTING_LOKALER_ACTIVE_INSTANCE_FILE
+	
+	echo "active instance: \"$instance_name\""
 }
 
 alias media-mirror='$PATH_LOKALER_VM/media-mirror.sh'
@@ -126,12 +134,12 @@ alias cd-tmp="cd ~/tmp"
 alias cd-vm="cd $PATH_LOKALER_VM"
 
 alias cd-repositories="cd $PATH_REPOS_ALL"
-alias cd-lokaler="cd $PATH_REPOS_ALL/lokaler"
-alias cd-lokaler-admin="cd $PATH_REPOS_ALL/lokaler-admin/lokaler_admin"
+alias cd-lokaler="cd $PATH_REPOS_ALL/lokaler/lokalerde"
+alias cd-lokaler-admin="cd $PATH_REPOS_ALL/lokaler/lokaler_admin"
 alias cd-lokaler-analytics="cd $PATH_REPOS_ALL/lokaler-analytics/analytics"
-alias cd-lokaler-api="cd $PATH_REPOS_ALL/lokaler-api/lokaler_api"
-alias cd-lokaler-core="cd $PATH_REPOS_ALL/lokaler-core/localdata"
-alias cd-lokaler-frontend="cd $PATH_REPOS_ALL/lokaler-frontend/lokaler_frontend"
+alias cd-lokaler-api="cd $PATH_REPOS_ALL/lokaler/lokaler_api"
+alias cd-lokaler-core="cd $PATH_REPOS_ALL/lokaler/localdata"
+alias cd-lokaler-frontend="cd $PATH_REPOS_ALL/lokaler/lokaler_frontend"
 alias cd-lokaler-places="cd $PATH_REPOS_ALL/lokaler-places/places"
 alias cd-lokaler-users="cd $PATH_REPOS_ALL/lokaler-users/users"
 
@@ -142,6 +150,13 @@ alias gc="git commit"
 alias ga="git add"
 alias gl="git log"
 alias gp="git push"
+alias gll='git log --graph --pretty=oneline --abbrev-commit'
 
 # ---------- SSH ----------
 alias ssh_lokaler='ssh sven@89.238.64.39'
+
+if [ -e $SETTING_LOKALER_ACTIVE_INSTANCE_FILE ]
+then
+	instance-set `cat $SETTING_LOKALER_ACTIVE_INSTANCE_FILE`
+fi;
+activate
