@@ -5,8 +5,9 @@ SETTING_LOKALER_ACTIVE_INSTANCE_FILE=$HOME/.active_instance
 
 LOGIN=sven@89.238.64.39
 
-PATH_HERE="`dirname \"$0\"`"
-if [ -f $PATH_HERE/settings_local.sh ]; then
-. $PATH_HERE/settings_local.sh
-fi
+# ---------- import local settings ----------
 
+SETTINGS_LOCAL="`dirname \"$0\"`/settings_local.sh"
+if [ -f $SETTINGS_LOCAL ]; then
+	source $SETTINGS_LOCAL
+fi

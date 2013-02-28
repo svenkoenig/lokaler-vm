@@ -3,8 +3,8 @@ DUMP_DIR='/home/sven/db/dumps'
 
 # ---------- import local settings ----------
 
-PATH_HERE="`dirname \"$0\"`"
-if [ -f $PATH_HERE/db_settings_local.sh ]; then
-. $PATH_HERE/db_settings_local.sh
+SETTINGS_LOCAL="`dirname \"$0\"`/db_settings_local.sh"
+if [ -f $SETTINGS_LOCAL ]; then
+	source $SETTINGS_LOCAL
 fi
 

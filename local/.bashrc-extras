@@ -160,3 +160,6 @@ then
 	instance-set `cat $SETTING_LOKALER_ACTIVE_INSTANCE_FILE`
 fi;
 activate
+
+# ---------- SSH ----------
+. ~/lokaler-vm/local/django_bash_completion
