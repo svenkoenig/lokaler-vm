@@ -6,7 +6,7 @@ source $SETTINGS
 if [[ -z "$1" ]]; then echo "name of database needed!"; exit 1; fi 
 
 DATABASE_NAME=$1
-LOG=/tmp/remote_command.log
+LOG=remote_command.log
 
 echo "--- remote script ---"
 echo '*' ssh $LOGIN $SCRIPT $DATABASE_NAME | tee $LOG
