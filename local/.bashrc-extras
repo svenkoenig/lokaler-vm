@@ -71,15 +71,23 @@ alias db-ls='psql -l'
 alias db-rm='dropdb'
 alias db-cp='createdb -T'
 db-mv () { echo "ALTER DATABASE \"$1\" RENAME TO \"$2\";" | psql; }
+db-exists () {
+	if [ -z "$1" ]; then echo "missing argument database name."; return; fi
+	
+	db_name=$1
+	db=`db-ls | tail -n +4 | grep "|" | awk -F\| '{print $1}' | egrep -v \b$db_name\b`
+	echo xxxxxxxxx $db
+	
+	if [ ! -z $db ];
+		then echo 1;
+		else echo 0;
+	fi
+}
 
 alias db-ls-dumps='ls -l ~/dumps'
 alias db-get-remote-dump='bash $PATH_LOKALER_VM/database/get_remote_dump.sh'
 alias db-restore-latest-dump='bash $PATH_LOKALER_VM/database/restore-latest-dump.sh'
 alias db-reset='$PATH_LOKALER_VM/database/db-reset.sh'
-
-db-use () {
-	echo "DATABASE_DEFAULT_NAME = '$1'" > $PATH_LOKALER_LOKALER/lokalerde/settings/local_database.py
-}
 
 # ---------- SWITCH INSTANCES ----------
 instance-set () {
@@ -114,7 +122,6 @@ instance-set () {
 	settings_file="$PATH_LOKALER_LOKALER/lokalerde/settings/local_vm.py"
 	echo "" > $settings_file
 	echo "DATABASE_DEFAULT_NAME = '${database_name}'" >> $settings_file;
-	echo "MEDIA_ROOT = '/home/lokaler/production/${instance_name}/media'" >> $settings_file
 	echo "MEDIA_ROOT = '/home/lokaler/production/${instance_name}/media'" >> $settings_file
 	echo $instance_name > $SETTING_LOKALER_ACTIVE_INSTANCE_FILE
 	
