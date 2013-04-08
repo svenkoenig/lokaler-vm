@@ -40,7 +40,7 @@ then
         echo "restoring dump..."
         echo '*' pg_restore -d $dst_database_name $dump_file.tar
         pg_restore -d $dst_database_name $dump_file.tar
-        date > db_restore-info.txt
+        date > $path_local_dumps/db_restore-info.txt
         echo "cleaning up..."
         rm "$dump_file.tar"
         echo "done."
