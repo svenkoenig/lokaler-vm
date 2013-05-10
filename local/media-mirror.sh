@@ -4,12 +4,12 @@ PATH_HERE="`dirname \"$0\"`"
 . $PATH_HERE/settings.sh
 
 instance=$1
-remote_dir="/home/lokaler/production/$instance/media/"
 
-remote_dir_exists=`ssh $LOGIN "sh -c \"if [ -d ${remote_dir} ]; then echo 1; else echo 0; fi\""`
-if [ $remote_dir_exists -eq 0 ]; then echo "ERROR: remote dir \"${remote_dir}\" doesn't exist!"; exit 1; fi
+REMOTE_MEDIA_DIR=${REMOTE_INSTANCES_DIR}${instance}/media
+LOCAL_MEDIA_DIR=${LOCAL_INSTANCES_DIR}${instance}/media
 
-local_dir=$HOME/production/${instance}/media/
+REMOTE_MEDIA_DIR_exists=`ssh $LOGIN "sh -c \"if [ -d ${REMOTE_MEDIA_DIR} ]; then echo 1; else echo 0; fi\""`
+if [ $REMOTE_MEDIA_DIR_exists -eq 0 ]; then echo "ERROR: remote dir \"${REMOTE_MEDIA_DIR}\" doesn't exist!"; exit 1; fi
 
-mkdir -p $local_dir
-rsync -avz -e ssh $LOGIN:${remote_dir}/* ${local_dir}/
+mkdir -p $LOCAL_MEDIA_DIR
+rsync -avz -e ssh $LOGIN:${REMOTE_MEDIA_DIR}/* ${LOCAL_MEDIA_DIR}/
